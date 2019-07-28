@@ -1,26 +1,31 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React,  { Component }from 'react';
+import { HashRouter as Router, Route } from "react-router-dom";
+import { ApolloProvider } from "react-apollo";
+import { ApolloProvider as ApolloHooksProvider } from "react-apollo-hooks";
+import client from "./apolloClient";
+import Home from "./views/Home";
+import Detail from "./views/Detail"; 
+import { GlobalStyle } from './globalStyles';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+class App extends Component  {
+  render () {
+    return (
+    <ApolloProvider client={client}>
+      <ApolloHooksProvider client={client}>
+        <Router>
+          <React.Fragment>
+            <GlobalStyle />
+            <Route exact={true} path={"/"} component={Home} />
+            {/* <Route path={"/details/:movieId"} component={Detail} children={(props) => props.match ? <h1>/datails 주소 </h1> : <h1>/details 주소 아님 </h1>}/> */}
+            <Route path={"/detail/:movieId"} component={Detail} /> 
+          </React.Fragment>
+        </Router>
+      </ApolloHooksProvider>
+    </ApolloProvider>
+    );
+  }
+
 }
 
 export default App;
